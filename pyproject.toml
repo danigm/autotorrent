@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "autotorrent"
+version = "0.1.0"
+description = ""
+authors = ["Daniel Garcia Moreno <dani@danigm.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+beautifulsoup4 = "^4.12.2"
+transmission-rpc = "^7.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+autotr = 'autotorrent.console:run'
