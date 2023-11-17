@@ -45,16 +45,16 @@ class SolidTorrent(TorrentProvider):
 Providers = [SolidTorrent()]
 
 
-def add_to_transmission(link):
+def add_to_transmission(link, download_dir):
     c = Client(host=TRANSMISSION["host"],
                port=TRANSMISSION["port"],
                username=TRANSMISSION["user"],
                password=TRANSMISSION["pass"])
     if link.startswith("magnet"):
-        c.add_torrent(link)
+        c.add_torrent(link, download_dir=download_dir)
     else:
         r = requests.get(torrent_url)
-        c.add_torrent(r.content)
+        c.add_torrent(r.content, download_dir=download_dir)
 
 
 def run():
@@ -64,6 +64,8 @@ def run():
                         help="Add the torrent to transmission")
     parser.add_argument("-a", action="store_true",
                         help="Show all the found torrents")
+    parser.add_argument("-dd", nargs="?",
+                        help="Set the download dir")
     parser.add_argument("query", nargs=1)
     args = parser.parse_args()
 
@@ -71,6 +73,6 @@ def run():
         for title, link in provider.search(args.query[0]):
             print(f"- {title}")
             if args.d:
-                add_to_transmission(link)
+                add_to_transmission(link, args.dd)
             if not args.a:
                 break
